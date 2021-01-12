@@ -1,84 +1,86 @@
-#include<stdio.h> 
-#include<stdlib.h> 
-#include<assert.h> 
+#include <stdio.h>
+#include <string.h>
+#include <stdlib.h>
 
-struct Node 
-{ 
+
+struct Node { 
 	int data; 
-	struct Node* next; 
+	struct Node *next; 
 }; 
-
-void MoveNode(struct Node** destRef, struct Node** sourceRef); 
-struct Node* SortedMerge(struct Node* a, struct Node* b) 
+ 
+void largestElement(struct Node *head) 
 { 
-	struct Node dummy; 
-	struct Node* tail = &dummy; 
-	dummy.next = NULL; 
-	while (1) 
-	{ 
-		if (a == NULL) 
-		{ 
-			tail->next = b; 
-			break; 
-		} 
-		else if (b == NULL) 
-		{ 
-			tail->next = a; 
-			break; 
-		} 
-		if (a->data <= b->data) 
-			MoveNode(&(tail->next), &a); 
-		else
-			MoveNode(&(tail->next), &b); 
-
-		tail = tail->next; 
+	 
+	int max = INT_MIN; 
+ 
+	while (head != NULL) { 		 
+		if (max < head->data) 
+			max = head->data; 
+		head = head->next; 
 	} 
-	return(dummy.next); 
+	printf("%d",max); 
 } 
-
-void MoveNode(struct Node** destRef, struct Node** sourceRef) { 
-	struct Node* newNode = *sourceRef; 
-	assert(newNode != NULL); 
-	*sourceRef = newNode->next; 
-	newNode->next = *destRef; 
-	*destRef = newNode; 
-} 
-
-
-
-void push(struct Node** head_ref, int new_data) 
+ 
+void smallestElement(struct Node *head) 
 { 
-	struct Node* new_node = 
-		(struct Node*) malloc(sizeof(struct Node)); 
-	new_node->data = new_data; 
-	new_node->next = (*head_ref); 
-	(*head_ref) = new_node; 
-} 
 
-void printList(struct Node *node) 
-{ 
-	while (node!=NULL) 
-	{ 
-		printf("%d ", node->data); 
-		node = node->next; 
+	int min = INT_MAX; 
+ 
+	while (head != NULL) { 
+ 
+		if (min > head->data) 
+			min = head->data; 
+
+		head = head->next; 
 	} 
+	printf("%d",min); 
 } 
 
+ 
+void push(struct Node** head, int data) 
+{  
+	struct Node *newNode = 
+		(struct Node*)malloc(sizeof(struct Node)); 
+
+ 
+	newNode->data = data;
+	newNode->next = (*head);  
+	(*head) = newNode; 
+} 
+
+// 
+void printList(struct Node *head) 
+{ 
+	while (head != NULL) { 
+		printf("%d -> ", head->data); 
+		head = head->next; 
+	} 
+	puts("NULL"); 
+} 
+
+// Driver program to test the functions 
 int main() 
 { 
-	struct Node* res = NULL; 
-	struct Node* a = NULL; 
-	struct Node* b = NULL; 
-	push(&a, 20); 
-	push(&a, 15); 
-	push(&a, 10); 
+	// Start with empty list 
+	struct Node *head = NULL; 
 
-	push(&b, 15); 
-	push(&b, 5); 
-	push(&b, 2); 
-	res = SortedMerge(a, b); 
-	printf("Merged Linked List is: \n"); 
-	printList(res); 
+	// Using push() function to construct 
+	// singly linked list 
+	// 17->22->13->14->15 
+	push(&head, 19); 
+	push(&head, 14); 
+	push(&head, 10); 
+	push(&head, 21); 
+	push(&head, 18); 
+	
+    printf("Linked list : ");
+    printList(head); 
+	
+    printf("Elemen terbesar : \n"); 
+    largestElement(head);
+	
+    printf("\nElemen terkecil : \n");  
+	smallestElement(head); 
 
 	return 0; 
 } 
